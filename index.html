@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, orientation=landscape">
   <title>Logo Animado</title>
   <style>
     body {
@@ -19,11 +19,25 @@
       max-height: 100vh;
       object-fit: cover;
     }
+
+    /* Esconde el contenido en modo vertical */
+    @media (orientation: portrait) {
+      body {
+        display: none;
+      }
+    }
+
+    /* Muestra el contenido solo en modo horizontal */
+    @media (orientation: landscape) {
+      body {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
   <video autoplay loop muted>
-    <source src="logo.mp4" type="video/mp4">
+    <source src="https://raya28.github.io/logo.mp4" type="video/mp4">
     Tu navegador no soporta videos HTML5.
   </video>
 </body>
