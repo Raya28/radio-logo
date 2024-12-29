@@ -11,7 +11,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: black; /* Fondo negro */
+      background-color: black;
     }
 
     video {
@@ -36,9 +36,71 @@
   </style>
 </head>
 <body>
-  <video autoplay loop muted>
-    <source src="https://raya28.github.io/logo.mp4" type="video/mp4">
+  <video id="videoPlayer" autoplay loop muted>
+    <source id="videoSource" src="" type="video/mp4">
     Tu navegador no soporta videos HTML5.
   </video>
+
+  <script>
+    // Lista de videos
+    var videos = [
+      "https://raya28.github.io/logo1.mp4",
+      "https://raya28.github.io/logo2.mp4",
+      "https://raya28.github.io/logo3.mp4"
+    ];
+
+    // Función para seleccionar un video aleatorio
+    function getRandomVideo() {
+      var randomIndex = Math.floor(Math.random() * videos.length);
+      return videos[randomIndex];
+    }
+
+    // Asigna el video aleatorio al reproductor
+    var videoPlayer = document.getElementById("videoPlayer");
+    var videoSource = document.getElementById("videoSource");
+    videoSource.src = getRandomVideo();
+    videoPlayer.load(); // Recarga el video con la nueva fuente
+    videoPlayer.play(); // Reproduce el video
+
+    // Variables para detectar gestos de deslizamiento
+    var startTouchY = 0;
+    var endTouchY = 0;
+
+    // Detecta el inicio del toque
+    document.addEventListener('touchstart', function(event) {
+      startTouchY = event.touches[0].clientY;
+    });
+
+    // Detecta el final del toque y el deslizamiento
+    document.addEventListener('touchend', function(event) {
+      endTouchY = event.changedTouches[0].clientY;
+
+      // Deslizar hacia abajo para cambiar el video
+      if (startTouchY < endTouchY) {
+        changeLogo(); // Cambio de video si el deslizamiento es hacia abajo
+      }
+      
+      // Deslizar hacia arriba para cerrar o minimizar la app
+      else if (startTouchY > endTouchY) {
+        closeApp(); // Minimiza la app si el deslizamiento es hacia arriba
+      }
+    });
+
+    // Función para cambiar el logo
+    function changeLogo() {
+      videoSource.src = getRandomVideo();
+      videoPlayer.load(); // Recarga el video con la nueva fuente
+      videoPlayer.play(); // Reproduce el video
+    }
+
+    // Función para minimizar la aplicación (específico para Fully Kiosk Browser)
+    function closeApp() {
+      if (typeof Fully !== "undefined") {
+        Fully.minimize(); // Minimiza la app
+      } else {
+        alert("Este código solo funcionará dentro de Fully Kiosk Browser.");
+      }
+    }
+  </script>
 </body>
 </html>
